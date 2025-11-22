@@ -1,0 +1,63 @@
+-- TABLO 1: Admin
+CREATE TABLE Admin (
+    admin_id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+-- ------------------------------------------------------------------------------------------------
+
+-- TABLO 2: Teacher (Öğretmen)
+CREATE TABLE Teacher (
+    teacher_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+-- ------------------------------------------------------------------------------------------------
+
+-- TABLO 3: Student (Öğrenci)
+CREATE TABLE Student (
+    student_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    student_number INT UNIQUE NOT NULL,
+    photo_path VARCHAR(255)
+);
+
+-- ------------------------------------------------------------------------------------------------
+
+-- TABLO 4: Class (Sınıf/Ders)
+CREATE TABLE Class (
+    class_id INT PRIMARY KEY AUTO_INCREMENT,
+    class_name VARCHAR(255) NOT NULL,
+    teacher_id INT NOT NULL,
+    schedule VARCHAR(255),
+    FOREIGN KEY (teacher_id) REFERENCES Teacher(teacher_id)
+);
+
+-- ------------------------------------------------------------------------------------------------
+
+-- TABLO 5: FaceRecognitionLog (Yüz Tanıma Kayıtları)
+CREATE TABLE FaceRecognitionLog (
+    log_id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT NOT NULL,
+    photo_path VARCHAR(255),
+    detection_time DATETIME,
+    recognition_result VARCHAR(255),
+    FOREIGN KEY (student_id) REFERENCES Student(student_id)
+);
+
+-- ------------------------------------------------------------------------------------------------
+
+-- TABLO 6: Attendance (Yoklama/Katılım)
+CREATE TABLE Attendance (
+    attendance_id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT NOT NULL,
+    class_id INT NOT NULL,
+    date DATETIME,
+    confidence_score FLOAT,
+    status ENUM('PRESENT', 'ABSENT'),
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (class_id) REFERENCES Class(class_id)
+);
